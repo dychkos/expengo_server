@@ -9,6 +9,6 @@ export class CreateExpenseDto {
 	@IsNumber()
   price: number;
 
-	@IsNumber()
-  categoryId: number;
+	@IsString()
+  categoryId: string;
 }

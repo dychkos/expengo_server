@@ -7,7 +7,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateCategoryDto, userId: number) {
+  async create(dto: CreateCategoryDto, userId: string) {
     return this.prisma.category.create({
       data: {
         userId,
@@ -16,9 +16,9 @@ export class CategoriesService {
     });
   }
 
-  async update(dto: UpdateCategoryDto, categoryId: number, userId: number) {
+  async update(dto: UpdateCategoryDto, categoryId: string, userId: string) {
     return this.prisma.category.update({
-      where: { id: categoryId },
+      where: { id: categoryId, userId },
       data: {
         userId,
         ...dto,
@@ -26,15 +26,15 @@ export class CategoriesService {
     });
   }
 
-  findAll() {
-    return this.prisma.category.findMany();
+  findAll(userId: string) {
+    return this.prisma.category.findMany({ where: { userId } });
   }
 
-  findOne(id: number) {
-    return this.prisma.category.findUnique({ where: { id } });
+  findOne(id: string, userId: string) {
+    return this.prisma.category.findUnique({ where: { id, userId } });
   }
 
-  remove(id: number) {
-    return this.prisma.category.delete({ where: { id } });
+  remove(id: string, userId: string) {
+    return this.prisma.category.delete({ where: { id, userId } });
   }
 }

@@ -7,7 +7,7 @@ import { UpdateExpenseDto } from './dto/update-expense.dto';
 export class ExpensesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateExpenseDto, userId: number) {
+  async create(dto: CreateExpenseDto, userId: string) {
     return this.prisma.expense.create({
       data: {
         userId,
@@ -16,9 +16,9 @@ export class ExpensesService {
     });
   }
 
-  async update(dto: UpdateExpenseDto, expenseId: number, userId: number) {
+  async update(dto: UpdateExpenseDto, expenseId: string, userId: string) {
     return this.prisma.expense.update({
-      where: { id: expenseId },
+      where: { id: expenseId, userId },
       data: {
         userId,
         ...dto,
@@ -26,15 +26,15 @@ export class ExpensesService {
     });
   }
 
-  findAll() {
-    return this.prisma.expense.findMany();
+  findAll(userId: string) {
+    return this.prisma.expense.findMany({ where: { userId } });
   }
 
-  findOne(id: number) {
-    return this.prisma.expense.findUnique({ where: { id } });
+  findOne(id: string, userId: string) {
+    return this.prisma.expense.findUnique({ where: { id, userId } });
   }
 
-  remove(id: number) {
-    return this.prisma.expense.delete({ where: { id } });
+  remove(id: string, userId: string) {
+    return this.prisma.expense.delete({ where: { id, userId } });
   }
 }

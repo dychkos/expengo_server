@@ -23,32 +23,32 @@ export class ExpensesController {
   constructor(private readonly service: ExpensesService) {}
 
   @Get()
-  index() {
-    return this.service.findAll();
+  index(@GetUser('id') userId: string) {
+    return this.service.findAll(userId);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@GetUser('id') userId: number, @Body() dto: CreateExpenseDto) {
+  create(@GetUser('id') userId: string, @Body() dto: CreateExpenseDto) {
     return this.service.create(dto, userId);
   }
 
   @Get(':id')
-  show(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id);
+  show(@GetUser('id') userId: string, @Param('id') id: string) {
+    return this.service.findOne(id, userId);
   }
 
   @Put(':id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
     @Body() dto: UpdateExpenseDto,
-    @GetUser('id') userId: number,
+    @GetUser('id') userId: string,
   ) {
     return this.service.update(dto, id, userId);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id);
+  remove(@GetUser('id') userId: string, @Param('id') id: string) {
+    return this.service.remove(id, userId);
   }
 }

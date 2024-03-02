@@ -11,7 +11,7 @@ export class UsersController {
 	){}
 
 	@Get('me')
-	getMe(@GetUser('id') id: number) {
+	getMe(@GetUser('id') id: string) {
 		return this.service.findOne(id);
 	}
 }
