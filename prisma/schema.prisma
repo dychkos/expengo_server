@@ -16,8 +16,8 @@ model User {
   weekStartDay Int       @default(1)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-  categories   Category?
-  expenses     Expense?
+  categories   Category[]
+  expenses     Expense[]
 }
 
 model Category {
@@ -30,10 +30,10 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId String @unique
+  userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  expenses Expense?
+  expenses Expense[]
 }
 
 model Expense {
@@ -43,9 +43,9 @@ model Expense {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  categoryId String      @unique
+  categoryId String 
   category   Category @relation(fields: [categoryId], references: [id])
 
-  userId String  @unique
+  userId String
   user   User @relation(fields: [userId], references: [id])
 }

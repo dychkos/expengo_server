@@ -1,14 +1,16 @@
-import { IsString, IsNotEmpty, MinLength, IsNumber } from 'class-validator'
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
 export class CreateExpenseDto {
-	@IsString()
+  @IsString()
   @IsNotEmpty()
   @MinLength(3)
   title: string;
 
-	@IsNumber()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   price: number;
 
-	@IsString()
+  @IsString()
   categoryId: string;
 }

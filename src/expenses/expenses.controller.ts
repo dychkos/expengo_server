@@ -6,9 +6,9 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
@@ -23,8 +23,12 @@ export class ExpensesController {
   constructor(private readonly service: ExpensesService) {}
 
   @Get()
-  index(@GetUser('id') userId: string) {
-    return this.service.findAll(userId);
+  index(
+    @Query('targetYear') targetYear: number,
+    @Query('targetMonth') targetMonth: number,
+    @GetUser('id') userId: string,
+  ) {
+    return this.service.findAll(userId, targetYear, targetMonth);
   }
 
   @Post()

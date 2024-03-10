@@ -26,8 +26,19 @@ export class ExpensesService {
     });
   }
 
-  findAll(userId: string) {
-    return this.prisma.expense.findMany({ where: { userId } });
+  findAll(userId: string, targetYear: number, targetMonth: number) {
+    return this.prisma.expense.findMany({
+      where: {
+        userId,
+        createdAt: {
+          gte: new Date(targetYear, targetMonth),
+          lte: new Date(targetYear, targetMonth + 1), 
+        },
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
   }
 
   findOne(id: string, userId: string) {
