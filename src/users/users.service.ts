@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -31,11 +31,15 @@ export class UsersService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-	findOneByEmail(email: string) {
+  findOneByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
+    if (!updateUserDto) {
+      throw new BadRequestException('Empty data in payload.');
+    }
+
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(
         updateUserDto.password,

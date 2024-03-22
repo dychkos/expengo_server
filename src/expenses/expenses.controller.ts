@@ -24,11 +24,15 @@ export class ExpensesController {
 
   @Get()
   index(
-    @Query('targetYear') targetYear: number,
-    @Query('targetMonth') targetMonth: number,
+    @Query('page') page,
+    @Query('perPage') perPage,
     @GetUser('id') userId: string,
   ) {
-    return this.service.findAll(userId, targetYear, targetMonth);
+    if (page && perPage) {
+      return this.service.findPaginated(userId, page, perPage);
+    }
+
+    return this.service.findAll(userId);
   }
 
   @Post()

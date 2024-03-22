@@ -6,7 +6,6 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   Put,
   UseGuards,
@@ -14,8 +13,8 @@ import {
 import { GetUser } from '../auth/decorator';
 import { JwtAuthGuard } from '../auth/guard';
 import { CategoriesService } from './categories.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDto } from './dto/input/create-category.dto';
+import { UpdateCategoryDto } from './dto/input/update-category.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('categories')
@@ -23,7 +22,7 @@ export class CategoriesController {
   constructor(private readonly service: CategoriesService) {}
 
   @Get()
-  index( @GetUser('id') userId: string,) {
+  index(@GetUser('id') userId: string) {
     return this.service.findAll(userId);
   }
 

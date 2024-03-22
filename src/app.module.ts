@@ -6,7 +6,9 @@ import { CategoriesModule } from './categories/categories.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config';
+import { StatisticsModule } from './statistics/statistics.module';
+import { HelpersModule } from './helpers/helpers.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { ConfigModule } from '@nestjs/config'
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    StatisticsModule,
+    HelpersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
