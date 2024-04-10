@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { createPaginator } from 'prisma-pagination';
-import { Category, Expense, Prisma } from '@prisma/client';
+import { Expense, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ExpensesService {
@@ -57,7 +57,7 @@ export class ExpensesService {
           userId,
         },
         orderBy: {
-          createdAt: 'desc',
+          updatedAt: 'desc',
         },
       },
       {

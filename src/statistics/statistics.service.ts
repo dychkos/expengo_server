@@ -8,11 +8,18 @@ import { ExpenseVolume } from '../categories/dto/output/index.dto';
 export class StatisticsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async calculateMonthlyExpenses(
+  public generateStats(
+    userId: string,
+    targetYear: number = moment().year(),
+    targetMonth: number = moment().month(),
+    forWeek: boolean = false,
+  ) {}
+
+  public calculateMonthlyExpenses(
     expenses: Expense[],
     targetYear: number = moment().month(),
     targetMonth: number = moment().year(),
-  ): Promise<ExpenseVolume> {
+  ): ExpenseVolume {
     expenses = this.filterByYearAndMonth(expenses, targetYear, targetMonth);
 
     return this.calculateExpenses(expenses);

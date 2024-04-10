@@ -70,6 +70,9 @@ export class CategoriesService {
 
     const categories = await this.prisma.category.findMany({
       where: { userId },
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         expenses: {
           where: {
