@@ -2,7 +2,7 @@
   "name": "expengo-server",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Serhii Dychko",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -30,13 +30,13 @@
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^8.0.0",
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.14.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "moment": "^2.30.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "prisma": "^5.9.1",
+    "prisma": "^5.14.0",
     "prisma-pagination": "^0.2.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -65,7 +65,7 @@
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1",
+    "tsconfig-paths": "^3.15.0",
     "typescript": "^4.3.5"
   },
   "jest": {
