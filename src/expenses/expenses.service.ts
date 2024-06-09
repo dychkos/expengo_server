@@ -4,12 +4,19 @@ import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { createPaginator } from 'prisma-pagination';
 import { Expense, Prisma } from '@prisma/client';
+import { CategoriesService } from '@/categories/categories.service';
 
 @Injectable()
 export class ExpensesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly categoryService: CategoriesService,
+  ) {}
 
   async create(dto: CreateExpenseDto, userId: string) {
+    if (!dto.categoryId) {
+      dto.categoryId = (await this.categoryService.getDefaultForUser(userId)).id;
+    }
     return this.prisma.expense.create({
       data: {
         userId,
@@ -19,6 +26,10 @@ export class ExpensesService {
   }
 
   async update(dto: UpdateExpenseDto, expenseId: string, userId: string) {
+    if (!dto.categoryId) {
+      dto.categoryId = (await this.categoryService.getDefaultForUser(userId)).id;
+    }
+
     return this.prisma.expense.update({
       where: { id: expenseId, userId },
       data: {

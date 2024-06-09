@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/input/create-category.dto';
 import { UpdateCategoryDto } from './dto/input/update-category.dto';
@@ -119,8 +119,44 @@ export class CategoriesService {
     };
   }
 
-  public remove(id: string, userId: string) {
+  public async remove(id: string, userId: string) {
+    const defaultCategory = await this.getDefaultForUser(userId);
+
+    if (defaultCategory.id === id) {
+      throw new BadRequestException('You cannot delete default category.')
+    }
+
+    await this.prisma.expense.updateMany({
+      where: {
+        categoryId: id,
+        userId,
+      },
+      data: {
+        categoryId: defaultCategory.id,
+      },
+    });
+
     return this.prisma.category.delete({ where: { id, userId } });
+  }
+
+  public generateDefault(): Pick<
+    Category,
+    'title' & 'iconName' & 'color' & 'limit' & 'period'
+  > {
+    return {
+      title: 'Uncategorized',
+      iconName: 'GrStatusUnknown',
+      color: '#dbadff',
+      limit: 0,
+      period: 'month',
+      uncategorized: true,
+    };
+  }
+
+  public async getDefaultForUser(userId: string) {
+    return this.prisma.category.findFirst({
+      where: { userId, uncategorized: true },
+    });
   }
 
   private appendDefaultFields(category: Category) {

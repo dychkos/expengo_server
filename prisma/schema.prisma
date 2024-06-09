@@ -9,32 +9,44 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  email        String    @unique
+  id           String   @id @default(uuid())
+  email        String   @unique
   firstName    String
   lastName     String
   password     String
-  weekStartDay Int       @default(1)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  categories   Category[]
-  expenses     Expense[]
+  weekStartDay Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  defaultCategoryId String?
+  defaultCategory   Category? @relation(fields: [defaultCategoryId], references: [id])
+
+  categories Category[] @relation("UserCategories")
+  expenses   Expense[]
+
+  @@map(name: "users")
 }
 
 model Category {
-  id        String   @id @default(uuid())
-  title     String
-  iconName  String
-  color     String
-  limit     Int
-  period    String
+  id       String @id @default(uuid())
+  title    String
+  iconName String
+  color    String
+  limit    Int
+  period   String
+
+  uncategorized Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation("UserCategories", fields: [userId], references: [id], onDelete: Cascade)
 
   expenses Expense[]
+  User     User[]
+
+  @@map(name: "categories")
 }
 
 model Expense {
@@ -48,5 +60,7 @@ model Expense {
   category   Category @relation(fields: [categoryId], references: [id])
 
   userId String
-  user   User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "expenses")
 }

@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, MinLength, ValidateIf } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsString()
@@ -12,5 +12,6 @@ export class CreateExpenseDto {
   price: number;
 
   @IsString()
-  categoryId: string;
+  @ValidateIf((object, value) => value !== null)
+  categoryId: string | null;
 }
